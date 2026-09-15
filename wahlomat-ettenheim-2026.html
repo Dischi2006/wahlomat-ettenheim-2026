@@ -1,0 +1,1367 @@
+
+```html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Wahl-O-Mat Ettenheim 2026</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f3f5f7;
+    color: #1f2933;
+    line-height: 1.5;
+}
+
+header {
+    background: linear-gradient(135deg, #173b67, #245b91);
+    color: white;
+    padding: 45px 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0 0 10px;
+    font-size: 38px;
+}
+
+header p {
+    margin: 5px auto;
+    max-width: 850px;
+    opacity: 0.95;
+}
+
+.container {
+    width: min(1100px, calc(100% - 30px));
+    margin: 30px auto 60px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 22px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+}
+
+.notice {
+    border-left: 5px solid #245b91;
+    background: #eef5fb;
+}
+
+.question {
+    border: 1px solid #e1e5e9;
+    border-radius: 14px;
+    padding: 22px;
+    margin: 18px 0;
+}
+
+.question-number {
+    font-size: 13px;
+    color: #667;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.question h3 {
+    margin: 5px 0 18px;
+    font-size: 19px;
+}
+
+.topic {
+    display: inline-block;
+    background: #e9eef4;
+    padding: 4px 9px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.answers {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.answers button {
+    border: 1px solid #ccd3da;
+    background: white;
+    padding: 12px 7px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.answers button:hover {
+    background: #eef5fb;
+    border-color: #245b91;
+}
+
+.answers button.selected {
+    background: #245b91;
+    color: white;
+    border-color: #245b91;
+}
+
+.answers button.skip {
+    grid-column: 1 / -1;
+    background: #f7f7f7;
+    color: #555;
+}
+
+.answers button.skip.selected {
+    background: #666;
+    color: white;
+}
+
+.importance {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.importance label {
+    font-size: 13px;
+    color: #555;
+}
+
+.importance select {
+    padding: 7px 10px;
+    border-radius: 7px;
+    border: 1px solid #ccd3da;
+}
+
+.progress-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: white;
+    padding: 12px 0;
+}
+
+.progress {
+    width: 100%;
+    height: 12px;
+    background: #e3e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #245b91;
+    transition: width 0.25s;
+}
+
+.progress-text {
+    font-size: 13px;
+    margin-top: 5px;
+    color: #555;
+}
+
+.main-button {
+    width: 100%;
+    border: none;
+    background: #173b67;
+    color: white;
+    padding: 17px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.main-button:hover {
+    background: #245b91;
+}
+
+.secondary-button {
+    border: 1px solid #ccd3da;
+    background: white;
+    color: #173b67;
+    padding: 11px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.secondary-button:hover {
+    background: #eef5fb;
+}
+
+.hidden {
+    display: none;
+}
+
+.result-card {
+    border-left: 7px solid #245b91;
+}
+
+.score-row {
+    margin: 18px 0;
+}
+
+.score-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.score-bar {
+    height: 18px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.score-fill {
+    height: 100%;
+    background: #245b91;
+}
+
+.rank-number {
+    font-size: 34px;
+    font-weight: bold;
+    color: #245b91;
+}
+
+.profile-box {
+    background: #f5f8fb;
+    border-radius: 12px;
+    padding: 18px;
+    margin-top: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    border-bottom: 1px solid #e3e6e9;
+    padding: 12px 9px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background: #f4f6f8;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 20px;
+    background: #e8eef5;
+    font-size: 12px;
+}
+
+.diff {
+    background: #fff7e6;
+}
+
+.same {
+    background: #f2f7f2;
+}
+
+.answer-review {
+    border-bottom: 1px solid #ddd;
+    padding: 12px 0;
+}
+
+.answer-review strong {
+    display: block;
+}
+
+.small {
+    font-size: 13px;
+    color: #666;
+}
+
+.warning {
+    color: #9a6700;
+}
+
+@media (max-width: 800px) {
+    header h1 {
+        font-size: 29px;
+    }
+
+    .answers {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .answers button.skip {
+        grid-column: 1 / -1;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 8px 5px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Wahl-O-Mat Ettenheim 2026</h1>
+    <p>
+        Welche Positionen passen am besten zu dir?
+    </p>
+    <p>
+        Vergleiche deine Antworten mit Alexander Ruchti, Karina Kratt und Dominik Eble.
+    </p>
+</header>
+
+<div class="container">
+
+    <div class="card notice">
+        <strong>Hinweis zur Methode</strong>
+        <p>
+            Die Kandidatenpositionen in diesem Wahl-O-Mat wurden auf Grundlage
+            der vorliegenden Vergleichsinformationen abgebildet.
+            Die Auswertung ist daher eine Orientierungshilfe und keine
+            wissenschaftliche Wahlprognose.
+        </p>
+        <p class="small">
+            Besonders wichtig: Wenn eine Position eines Kandidaten in der
+            zugrunde liegenden Vergleichsgrundlage nicht eindeutig dokumentiert
+            ist, wird sie nicht automatisch als Zustimmung oder Ablehnung gewertet.
+        </p>
+    </div>
+
+    <div class="card progress-wrapper">
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-text" id="progressText">
+            0 von 25 Fragen beantwortet
+        </div>
+    </div>
+
+    <div id="questions"></div>
+
+    <div class="card">
+        <button class="main-button" onclick="calculateResult()">
+            Ergebnis berechnen
+        </button>
+    </div>
+
+    <div id="result" class="hidden">
+
+        <div class="card">
+            <h2>Dein Ergebnis</h2>
+            <p>
+                Je höher der Wert, desto größer ist die Übereinstimmung
+                zwischen deinen Antworten und den dargestellten
+                Kandidatenpositionen.
+            </p>
+
+            <div id="ranking"></div>
+        </div>
+
+        <div class="card">
+            <h2>Dein politisches Profil</h2>
+            <div id="profile"></div>
+        </div>
+
+        <div class="card">
+            <h2>Wo unterscheiden sich die Kandidaten?</h2>
+            <div id="differences"></div>
+        </div>
+
+        <div class="card">
+            <h2>Deine Antworten überprüfen</h2>
+            <div id="review"></div>
+        </div>
+
+        <div class="card">
+            <h2>Kandidaten im Überblick</h2>
+            <div id="candidateAnalysis"></div>
+        </div>
+
+        <div class="card">
+            <button class="secondary-button" onclick="window.print()">
+                Ergebnis drucken / als PDF speichern
+            </button>
+
+            <button class="secondary-button" onclick="resetAll()">
+                Alles zurücksetzen
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   DATEN
+   ========================================================= */
+
+const candidates = [
+    {
+        name: "Alexander Ruchti",
+        description:
+            "Erfahrung, Kontinuität und Verwaltung. Schwerpunkt auf soliden Finanzen, Infrastruktur, Verwaltung und Bürgernähe."
+    },
+    {
+        name: "Karina Kratt",
+        description:
+            "Generationwechsel, lokale Verwurzelung und stärkerer Fokus auf Ortsteile, Ehrenamt, Bürgernähe und Umwelt."
+    },
+    {
+        name: "Dominik Eble",
+        description:
+            "Blick von außen, Führungserfahrung aus der Wirtschaft und stärkerer Fokus auf Veränderung, Innenstadt, moderne Verwaltung und Umsetzung."
+    }
+];
+
+
+/*
+   position:
+   -2 = lehnt stark ab
+   -1 = lehnt eher ab
+    0 = neutral / keine klare Richtung
+    1 = stimmt eher zu
+    2 = stimmt stark zu
+
+   null = keine belastbare Zuordnung
+*/
+
+const questions = [
+
+    {
+        topic: "Innenstadt",
+        text: "Die Innenstadt sollte durch Leerstandsmanagement, neue Nutzungskonzepte und eine bessere Aufenthaltsqualität deutlich attraktiver werden.",
+        positions: [2, 2, 2]
+    },
+
+    {
+        topic: "Ortsteile",
+        text: "Die Ortsteile sollten politisch und organisatorisch stärker berücksichtigt werden und mehr direkte Präsenz von Bürgermeister und Gemeinderat erhalten.",
+        positions: [1, 2, 1]
+    },
+
+    {
+        topic: "Bürgernähe",
+        text: "Bürgerbeteiligung, Transparenz und nachvollziehbare Entscheidungen sollten zu den wichtigsten Aufgaben des Bürgermeisters gehören.",
+        positions: [2, 2, 2]
+    },
+
+    {
+        topic: "Gemeinschaft",
+        text: "Ettenheim sollte stärker zentrale Begegnungs- und Bewegungsorte für alle Generationen schaffen.",
+        positions: [1, 1, 2]
+    },
+
+    {
+        topic: "Sport",
+        text: "Der Bau der geplanten Dreifeldsporthalle sollte klar priorisiert und umgesetzt werden.",
+        positions: [2, 2, 1]
+    },
+
+    {
+        topic: "Sportstätten",
+        text: "Nach der Dreifeldsporthalle sollte die Herbert-König-Halle umfassend saniert werden.",
+        positions: [2, 2, 2]
+    },
+
+    {
+        topic: "Kultur",
+        text: "Ettenheim sollte langfristig ein größeres zentrales Kultur-, Veranstaltungs- oder Bürgerzentrum entwickeln.",
+        positions: [0, 2, 2]
+    },
+
+    {
+        topic: "Ehrenamt",
+        text: "Die Stadt sollte Vereine stärker durch persönliche Ansprechpartner und den Abbau von Bürokratie unterstützen.",
+        positions: [1, 2, 2]
+    },
+
+    {
+        topic: "Wirtschaft",
+        text: "Wirtschaft, Handwerk, Handel, Landwirtschaft und Dienstleistungen sollten aktiv durch die Stadt unterstützt werden.",
+        positions: [2, 2, 2]
+    },
+
+    {
+        topic: "Gewerbeflächen",
+        text: "Neue Gewerbeflächen sollten nur zurückhaltend ausgewiesen werden, wenn zunächst Leerstände und Nachverdichtung geprüft wurden.",
+        positions: [0, 2, 1]
+    },
+
+    {
+        topic: "Klima / Umwelt",
+        text: "Klimaanpassung mit mehr Bäumen, Schatten, Grünflächen und Schutz vor Extremwetter sollte deutlich ausgebaut werden.",
+        positions: [2, 2, 2]
+    },
+
+    {
+        topic: "Grünflächen",
+        text: "Bestehende Grünflächen sollten möglichst erhalten und stärker als Aufenthalts- und Abkühlungsorte genutzt werden.",
+        positions: [1, 2, 2]
+    },
+
+    {
+        topic: "Familie",
+        text: "Eine verlässliche und bedarfsgerechte Kinderbetreuung sollte hohe Priorität haben.",
+        positions: [2, 2, 2]
+    },
+
+    {
+        topic: "Wohnen",
+        text: "Die Stadt sollte Mehrgenerationenwohnen, altersgerechte Wohnformen und bezahlbaren Wohnraum aktiv fördern.",
+        positions: [2, 1, 1]
+    },
+
+    {
+        topic: "Spielplätze",
+        text: "Die Stadt sollte eher weniger, dafür größere und besser ausgestattete Spiel- und Begegnungsorte schaffen, auch wenn dafür einzelne Spielplätze entfallen.",
+        positions: [0, 0, 2]
+    },
+
+    {
+        topic: "Feuerwehr / Sicherheit",
+        text: "Investitionen in Feuerwehr und Sicherheitsinfrastruktur sollten konsequent umgesetzt werden.",
+        positions: [2, null, null]
+    },
+
+    {
+        topic: "Infrastruktur",
+        text: "Wasser, Abwasser, Energie, Wärmenetze und Hochwasserschutz sollten zu den zentralen langfristigen Investitionsfeldern gehören.",
+        positions: [2, 1, 2]
+    },
+
+    {
+        topic: "Finanzen",
+        text: "Die Stadt sollte Investitionen vor allem aus einer langfristig soliden Finanzplanung heraus priorisieren.",
+        positions: [2, 2, 2]
+    },
+
+    {
+        topic: "Schulden",
+        text: "Schulden sind vertretbar, wenn damit wichtige Investitionen mit langfristigem Nutzen finanziert werden können.",
+        positions: [1, 1, 2]
+    },
+
+    {
+        topic: "Sportinvestitionen",
+        text: "Bei großen Sportinvestitionen sollten Kosten und Vergleichswerte anderer Städte besonders kritisch geprüft werden.",
+        positions: [2, 1, 2]
+    },
+
+    {
+        topic: "Digitalisierung / KI",
+        text: "Die Stadtverwaltung sollte durch Digitalisierung und KI Prozesse vereinfachen und effizienter machen.",
+        positions: [2, 1, 2]
+    },
+
+    {
+        topic: "Transparenz",
+        text: "Die Stadt sollte Bürgern verständliche Projektberichte mit Zeit, Kosten und Qualität anbieten.",
+        positions: [1, 1, 2]
+    },
+
+    {
+        topic: "Führung",
+        text: "Ein Bürgermeister mit Führungserfahrung aus der Wirtschaft und einem Blick von außen kann der Stadt einen wichtigen Neustart geben.",
+        positions: [-1, 1, 2]
+    },
+
+    {
+        topic: "Veränderung",
+        text: "Ettenheim braucht eher einen deutlichen Neustart als eine kontinuierliche Weiterentwicklung bestehender Strukturen.",
+        positions: [-1, 1, 2]
+    },
+
+    {
+        topic: "Generationenwechsel",
+        text: "Ein Generationenwechsel im Bürgermeisteramt sollte bei der Wahl eine wichtige Rolle spielen.",
+        positions: [0, 2, 0]
+    }
+
+];
+
+
+/* =========================================================
+   BENUTZERANTWORTEN
+   ========================================================= */
+
+let answers = questions.map(() => null);
+
+/*
+   Wichtigkeit:
+   1 = normal
+   2 = wichtig
+   3 = sehr wichtig
+*/
+
+let importance = questions.map(() => 1);
+
+
+/* =========================================================
+   FRAGEN AUFBAUEN
+   ========================================================= */
+
+function renderQuestions() {
+
+    const container = document.getElementById("questions");
+
+    container.innerHTML = "";
+
+    questions.forEach((question, index) => {
+
+        const div = document.createElement("div");
+
+        div.className = "card question";
+
+        div.innerHTML = `
+            <div class="question-number">
+                Frage ${index + 1} von ${questions.length}
+            </div>
+
+            <span class="topic">${question.topic}</span>
+
+            <h3>${question.text}</h3>
+
+            <div class="answers">
+
+                <button onclick="setAnswer(${index}, -2)" data-value="-2">
+                    Stimme nicht zu
+                </button>
+
+                <button onclick="setAnswer(${index}, -1)" data-value="-1">
+                    Eher nicht zu
+                </button>
+
+                <button onclick="setAnswer(${index}, 0)" data-value="0">
+                    Neutral
+                </button>
+
+                <button onclick="setAnswer(${index}, 1)" data-value="1">
+                    Eher zu
+                </button>
+
+                <button onclick="setAnswer(${index}, 2)" data-value="2">
+                    Stimme zu
+                </button>
+
+                <button class="skip" onclick="setAnswer(${index}, null)" data-value="null">
+                    Keine Meinung / überspringen
+                </button>
+
+            </div>
+
+            <div class="importance">
+
+                <label for="importance-${index}">
+                    Wie wichtig ist diese Frage für dich?
+                </label>
+
+                <select id="importance-${index}"
+                        onchange="setImportance(${index}, this.value)">
+
+                    <option value="1">Normal</option>
+                    <option value="2">Wichtig</option>
+                    <option value="3">Sehr wichtig</option>
+
+                </select>
+
+            </div>
+        `;
+
+        container.appendChild(div);
+    });
+
+    updateProgress();
+}
+
+
+/* =========================================================
+   ANTWORT SETZEN
+   ========================================================= */
+
+function setAnswer(index, value) {
+
+    answers[index] = value;
+
+    const questionElement =
+        document.querySelectorAll(".question")[index];
+
+    const buttons =
+        questionElement.querySelectorAll(".answers button");
+
+    buttons.forEach(button => {
+
+        const buttonValue = button.dataset.value;
+
+        if (
+            (value === null && buttonValue === "null") ||
+            (value !== null && Number(buttonValue) === value)
+        ) {
+            button.classList.add("selected");
+        } else {
+            button.classList.remove("selected");
+        }
+
+    });
+
+    updateProgress();
+}
+
+
+/* =========================================================
+   WICHTIGKEIT
+   ========================================================= */
+
+function setImportance(index, value) {
+
+    importance[index] = Number(value);
+}
+
+
+/* =========================================================
+   FORTSCHRITT
+   ========================================================= */
+
+function updateProgress() {
+
+    const answered =
+        answers.filter(answer => answer !== null).length;
+
+    const percentage =
+        (answered / questions.length) * 100;
+
+    document.getElementById("progressBar").style.width =
+        percentage + "%";
+
+    document.getElementById("progressText").textContent =
+        answered +
+        " von " +
+        questions.length +
+        " Fragen beantwortet";
+}
+
+
+/* =========================================================
+   ÜBEREINSTIMMUNG
+   ========================================================= */
+
+/*
+    Abstand zwischen Benutzer und Kandidat:
+
+    0 Abstand = 100 %
+    1 Abstand = 75 %
+    2 Abstand = 50 %
+    3 Abstand = 25 %
+    4 Abstand = 0 %
+
+    null beim Kandidaten bedeutet:
+    Frage wird für diesen Kandidaten nicht gewertet.
+*/
+
+function agreement(userValue, candidateValue) {
+
+    if (userValue === null || candidateValue === null) {
+        return null;
+    }
+
+    const distance =
+        Math.abs(userValue - candidateValue);
+
+    return Math.max(0, 100 - distance * 25);
+}
+
+
+/* =========================================================
+   ERGEBNIS BERECHNEN
+   ========================================================= */
+
+function calculateResult() {
+
+    const answeredCount =
+        answers.filter(answer => answer !== null).length;
+
+    if (answeredCount === 0) {
+
+        alert(
+            "Bitte beantworte mindestens eine Frage, bevor du das Ergebnis berechnest."
+        );
+
+        return;
+    }
+
+
+    const results = candidates.map((candidate, candidateIndex) => {
+
+        let weightedScore = 0;
+        let totalWeight = 0;
+
+        questions.forEach((question, questionIndex) => {
+
+            const userValue = answers[questionIndex];
+
+            const candidateValue =
+                question.positions[candidateIndex];
+
+            const match =
+                agreement(userValue, candidateValue);
+
+            if (match === null) {
+                return;
+            }
+
+            const weight =
+                importance[questionIndex];
+
+            weightedScore += match * weight;
+
+            totalWeight += 100 * weight;
+        });
+
+        return {
+            name: candidate.name,
+            description: candidate.description,
+            score:
+                totalWeight > 0
+                    ? (weightedScore / totalWeight) * 100
+                    : 0
+        };
+
+    });
+
+
+    results.sort((a, b) => b.score - a.score);
+
+
+    renderRanking(results);
+    renderProfile();
+    renderDifferences();
+    renderReview();
+    renderCandidateAnalysis();
+
+    document.getElementById("result")
+        .classList.remove("hidden");
+
+    document.getElementById("result")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+}
+
+
+/* =========================================================
+   RANGLISTE
+   ========================================================= */
+
+function renderRanking(results) {
+
+    const container =
+        document.getElementById("ranking");
+
+    container.innerHTML = "";
+
+    results.forEach((result, index) => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "score-row";
+
+        div.innerHTML = `
+
+            <div class="score-header">
+
+                <span>
+                    <span class="rank-number">
+                        ${index + 1}
+                    </span>
+                    ${result.name}
+                </span>
+
+                <span>
+                    ${result.score.toFixed(1)} %
+                </span>
+
+            </div>
+
+            <div class="score-bar">
+
+                <div class="score-fill"
+                     style="width:${result.score}%">
+                </div>
+
+            </div>
+
+            <p class="small">
+                ${result.description}
+            </p>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+
+/* =========================================================
+   PERSÖNLICHES PROFIL
+   ========================================================= */
+
+function renderProfile() {
+
+    const container =
+        document.getElementById("profile");
+
+    const answered =
+        answers.filter(a => a !== null);
+
+    if (answered.length === 0) {
+        container.innerHTML = "";
+        return;
+    }
+
+    let sum = 0;
+
+    answered.forEach(value => {
+        sum += value;
+    });
+
+    const average =
+        sum / answered.length;
+
+
+    let profileText = "";
+
+    if (average >= 1) {
+
+        profileText =
+            "Du vertrittst insgesamt eher zustimmende Positionen und befürwortest viele der vorgeschlagenen Entwicklungen.";
+
+    } else if (average >= 0.25) {
+
+        profileText =
+            "Du tendierst insgesamt eher zu einer zustimmenden, aber differenzierten Haltung.";
+
+    } else if (average > -0.25) {
+
+        profileText =
+            "Deine Antworten liegen insgesamt relativ ausgewogen zwischen Zustimmung und Ablehnung.";
+
+    } else if (average > -1) {
+
+        profileText =
+            "Du stehst vielen der vorgeschlagenen Veränderungen eher kritisch oder zurückhaltend gegenüber.";
+
+    } else {
+
+        profileText =
+            "Du vertrittst insgesamt eher zurückhaltende oder ablehnende Positionen gegenüber den vorgeschlagenen Entwicklungen.";
+    }
+
+
+    container.innerHTML = `
+
+        <div class="profile-box">
+
+            <h3>Deine grundsätzliche Tendenz</h3>
+
+            <p>
+                ${profileText}
+            </p>
+
+            <p>
+                Du hast
+                <strong>${answered.length}</strong>
+                von
+                <strong>${questions.length}</strong>
+                Fragen beantwortet.
+            </p>
+
+        </div>
+
+        <div class="profile-box">
+
+            <h3>Deine stärksten Prioritäten</h3>
+
+            <p>
+                Besonders stark gewichtete Fragen fließen in der
+                Kandidatenberechnung entsprechend stärker ein.
+            </p>
+
+        </div>
+    `;
+}
+
+
+/* =========================================================
+   UNTERSCHIEDE
+   ========================================================= */
+
+function renderDifferences() {
+
+    const container =
+        document.getElementById("differences");
+
+    container.innerHTML = "";
+
+    let found = 0;
+
+    questions.forEach((question, index) => {
+
+        const values =
+            question.positions.filter(
+                value => value !== null
+            );
+
+        const uniqueValues =
+            [...new Set(values)];
+
+        if (
+            uniqueValues.length <= 1 ||
+            answers[index] === null
+        ) {
+            return;
+        }
+
+        found++;
+
+        const row =
+            document.createElement("div");
+
+        row.className = "question diff";
+
+        let html = `
+            <strong>${question.topic}</strong>
+            <p>${question.text}</p>
+
+            <table>
+
+                <tr>
+                    <th>Kandidat</th>
+                    <th>Position</th>
+                    <th>Deine Antwort</th>
+                </tr>
+        `;
+
+        candidates.forEach((candidate, candidateIndex) => {
+
+            const value =
+                question.positions[candidateIndex];
+
+            let positionText =
+                positionLabel(value);
+
+            let match =
+                agreement(
+                    answers[index],
+                    value
+                );
+
+            html += `
+                <tr>
+                    <td>${candidate.name}</td>
+                    <td>${positionText}</td>
+                    <td>
+                        ${
+                            match === null
+                            ? "nicht gewertet"
+                            : match.toFixed(0) + " %"
+                        }
+                    </td>
+                </tr>
+            `;
+        });
+
+        html += `</table>`;
+
+        row.innerHTML = html;
+
+        container.appendChild(row);
+    });
+
+
+    if (found === 0) {
+
+        container.innerHTML = `
+            <div class="profile-box">
+                Es gibt bei deinen beantworteten Fragen keine
+                deutlichen Unterschiede zwischen den Kandidaten.
+                Das bedeutet nicht, dass sie politisch identisch sind –
+                viele Themen werden von allen ähnlich bewertet.
+            </div>
+        `;
+    }
+}
+
+
+/* =========================================================
+   ANTWORTÜBERSICHT
+   ========================================================= */
+
+function renderReview() {
+
+    const container =
+        document.getElementById("review");
+
+    container.innerHTML = "";
+
+    questions.forEach((question, index) => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "answer-review";
+
+        const answerText =
+            answerLabel(answers[index]);
+
+        div.innerHTML = `
+
+            <strong>
+                ${index + 1}. ${question.topic}
+            </strong>
+
+            <span>
+                ${question.text}
+            </span>
+
+            <br>
+
+            <span class="small">
+                Deine Antwort:
+                <strong>${answerText}</strong>
+                · Wichtigkeit:
+                <strong>
+                    ${importanceLabel(importance[index])}
+                </strong>
+            </span>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+
+/* =========================================================
+   KANDIDATENANALYSE
+   ========================================================= */
+
+function renderCandidateAnalysis() {
+
+    const container =
+        document.getElementById("candidateAnalysis");
+
+    container.innerHTML = "";
+
+    candidates.forEach((candidate, candidateIndex) => {
+
+        let strongMatches = [];
+        let weakMatches = [];
+
+        questions.forEach((question, index) => {
+
+            const userValue =
+                answers[index];
+
+            const candidateValue =
+                question.positions[candidateIndex];
+
+            const match =
+                agreement(
+                    userValue,
+                    candidateValue
+                );
+
+            if (match === null) {
+                return;
+            }
+
+            if (match >= 75) {
+
+                strongMatches.push({
+                    topic: question.topic,
+                    score: match
+                });
+
+            } else if (match <= 25) {
+
+                weakMatches.push({
+                    topic: question.topic,
+                    score: match
+                });
+
+            }
+        });
+
+
+        const div =
+            document.createElement("div");
+
+        div.className = "profile-box";
+
+        div.innerHTML = `
+
+            <h3>${candidate.name}</h3>
+
+            <p>
+                ${candidate.description}
+            </p>
+
+            <p>
+                <strong>
+                    Besonders passende Themen:
+                </strong>
+                ${
+                    strongMatches.length
+                    ? strongMatches
+                        .slice(0, 6)
+                        .map(item => item.topic)
+                        .join(", ")
+                    : "keine eindeutige Übereinstimmung"
+                }
+            </p>
+
+            <p>
+                <strong>
+                    Größere Unterschiede:
+                </strong>
+                ${
+                    weakMatches.length
+                    ? weakMatches
+                        .slice(0, 6)
+                        .map(item => item.topic)
+                        .join(", ")
+                    : "keine großen Unterschiede"
+                }
+            </p>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+
+/* =========================================================
+   TEXTFUNKTIONEN
+   ========================================================= */
+
+function answerLabel(value) {
+
+    if (value === null)
+        return "Keine Meinung / übersprungen";
+
+    if (value === -2)
+        return "Stimme nicht zu";
+
+    if (value === -1)
+        return "Eher nicht zu";
+
+    if (value === 0)
+        return "Neutral";
+
+    if (value === 1)
+        return "Eher zu";
+
+    if (value === 2)
+        return "Stimme zu";
+}
+
+
+function positionLabel(value) {
+
+    if (value === null)
+        return "Nicht eindeutig dokumentiert";
+
+    if (value === -2)
+        return "Starke Ablehnung";
+
+    if (value === -1)
+        return "Eher ablehnend";
+
+    if (value === 0)
+        return "Neutral / keine klare Richtung";
+
+    if (value === 1)
+        return "Eher zustimmend";
+
+    if (value === 2)
+        return "Stark zustimmend";
+}
+
+
+function importanceLabel(value) {
+
+    if (value === 1)
+        return "Normal";
+
+    if (value === 2)
+        return "Wichtig";
+
+    return "Sehr wichtig";
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+function resetAll() {
+
+    if (
+        !confirm(
+            "Möchtest du wirklich alle Antworten löschen?"
+        )
+    ) {
+        return;
+    }
+
+    answers =
+        questions.map(() => null);
+
+    importance =
+        questions.map(() => 1);
+
+    renderQuestions();
+
+    document.getElementById("result")
+        .classList.add("hidden");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+renderQuestions();
+
+</script>
+
+</body>
+</html>
+```
